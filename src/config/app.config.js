@@ -33,5 +33,19 @@ export const ToastId  = {
     ConfigPlant: 'config-plant-id',
     CreateStorage: 'create-storage-id',
     ConfigStorage: 'config-storage-id',
+    CreateLocation: 'create-location-id',
+    ConfigLocation: 'config-location-id',
+    Delete: 'delete',
     Login: 'login-id'
 }
+
+export const AccountConfig = [
+    {
+        Username: 'admin@cp.com.vn',
+        Password: 'Admin@123'
+    },
+    {
+        Username: 'staff@cp.com.vn',
+        Password: 'Staff@123'
+    }
+]

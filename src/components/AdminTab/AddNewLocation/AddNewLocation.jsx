@@ -11,8 +11,7 @@ import API from '../../../api/api';
 import { toast } from 'react-toastify'; 
 import { initToast } from '../../../utils/helper';
 import { ToastId } from '../../../config/app.config';
-import './AddNewStorage.scss';
-
+import './AddNewLocation.scss';
 
 const modalStyle = {
     position: 'absolute',
@@ -26,63 +25,72 @@ const modalStyle = {
     height: '100vh'
 };
 
-const AddNewStorage = () => {
+const AddNewLocation = () => {
     const context = useContext(AdminContext)
     const { t } = useTranslation('translation')
 
-    const [storageInfor, setStorageInfor] = useState({
+    const [locationInfor, setLocationInfor] = useState({
         baCode: '5096',
-        plantCode: context.addStorage?.plant?.plantCode || '',
-        plantName: context.addStorage?.plant?.plantName || '',
-        storageName: ''
+        plantCode: context.addLocation?.plant?.plantCode || '',
+        plantName: context.addLocation?.plant?.plantName || '',
+        storageId: context.addLocation?.storage?.storageId || 0,
+        storageName: context.addLocation?.storage?.storageName || '',
+        locationName: ''
     })
     const [confirm, setConfirm] = useState(false)
 
-    const handleChangeValueStorage = (paramName, value) => {
-        setStorageInfor(prev => ({...prev, [paramName]: value}))
+    const handleChangeLocationName = (newValue) => {
+        setLocationInfor(prev => ({ ...prev, locationName: newValue }))
     }
 
-    const handleClose = () => context.setOpenPopupAddStorage(false)
+    const handleClose = () => context.setOpenPopupAddLocation(false)
 
     const handleClickConfirmButton = () => {
         setConfirm(true)
     }
-
+ 
     useEffect(() => {
-        setStorageInfor({
+        setLocationInfor({
             baCode: '5096',
-            plantCode: context.addStorage?.plant?.plantCode || '',
-            plantName: context.addStorage?.plant?.plantName || '',
-            storageName: ''
+            plantCode: context.addLocation?.plant?.plantCode || '',
+            plantName: context.addLocation?.plant?.plantName || '',
+            storageId: context.addLocation?.storage?.storageId || 0,
+            storageName: context.addLocation?.storage?.storageName || '',
+            locationName: ''
         })
-    }, [context.addStorage?.plant])
-
+    }, [context.addLocation])
+    
     useEffect(() => {
         if (confirm) {
             const postData = async () => {
-                initToast(ToastId.CreateStorage)
+                initToast(ToastId.CreateLocation)
                 try {
-                    const resultApi = await API.adminService.createStorage({ baCode: storageInfor.baCode, plantCode: storageInfor.plantCode, storageName: storageInfor.storageName})
+                    const resultApi = await API.adminService.createLocation({
+                        baCode: locationInfor.baCode,
+                        plantCode: locationInfor.plantCode,
+                        storageId: locationInfor.storageId,
+                        locationName: locationInfor.locationName
+                    })
                     if (resultApi && resultApi.data && resultApi.data.code === 0) {
-                        context.setOpenPopupAddStorage(false)
+                        context.setOpenPopupAddLocation(false)
                         context.setRefreshDataTable(prev => !prev)
-                        toast.update(ToastId.CreateStorage, { 
-                            render: "Tạo Storage thành công", 
+                        toast.update(ToastId.CreateLocation, { 
+                            render: "Tạo Location thành công", 
                             type: "success", 
                             isLoading: false, 
                             autoClose: 2000 
                         })
                     } else {
-                        toast.update(ToastId.CreateStorage, { 
-                            render: resultApi.data.message || "Tạo Storage thất bại", 
+                        toast.update(ToastId.CreateLocation, { 
+                            render: resultApi.data.message || "Tạo Location thất bại", 
                             type: "error", 
                             isLoading: false, 
                             autoClose: 3000 
                         })
                     }
                 } catch (err) {
-                    toast.update(ToastId.CreateStorage, { 
-                        render: err.response.data.message || "Tạo Storage thất bại", 
+                    toast.update(ToastId.CreateLocation, { 
+                        render: err.response.data.message || "Tạo Location thất bại", 
                         type: "error", 
                         isLoading: false, 
                         autoClose: 3000 
@@ -97,13 +105,13 @@ const AddNewStorage = () => {
     return (
         <div>
             <Modal 
-                open={context.openPopupAddStorage} onClose={handleClose} 
+                open={context.openPopupAddLocation} onClose={handleClose} 
                 aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description"
                 className='add-new-storage-popup'
             >
                 <Box sx={modalStyle}>
                     <div className='add-new-storage-popup-header'>
-                        <div className='add-new-storage-popup-header-title'>{t('add_new_storage_popup_title')}</div>
+                        <div className='add-new-storage-popup-header-title'>{t('add_new_location_popup_title')}</div>
                         <IconButton size='medium' onClick={handleClose}>
                             <CloseIcon />
                         </IconButton>
@@ -112,19 +120,25 @@ const AddNewStorage = () => {
                         <div className='add-new-storage-popup-body-text-field'>
                             <TextField  variant="outlined" label={t('add_new_factory_popup_factory_code')}
                                 placeholder={t('add_new_factory_popup_factory_code_placeholder')} fullWidth disabled
-                                value={storageInfor.plantCode}
+                                value={locationInfor.plantCode}
                             />
                         </div>
                         <div className='add-new-storage-popup-body-text-field'>
                             <TextField  variant="outlined" label={t('add_new_factory_popup_factory_name')}
                                 placeholder={t('add_new_factory_popup_factory_name_placeholder')} fullWidth disabled
-                                value={storageInfor.plantName}
+                                value={locationInfor.plantName}
                             />
                         </div>
                         <div className='add-new-storage-popup-body-text-field'>
                             <TextField  variant="outlined" label={t('add_new_storage_popup_storage_name')} 
-                                placeholder={t('add_new_storage_popup_storage_name_placeholder')} fullWidth
-                                value={storageInfor.storageName} onChange={(event) => handleChangeValueStorage('storageName', event.target.value)}
+                                placeholder={t('add_new_storage_popup_storage_name_placeholder')} fullWidth disabled
+                                value={locationInfor.storageName}
+                            />
+                        </div>
+                        <div className='add-new-storage-popup-body-text-field'>
+                            <TextField  variant="outlined" label={t('add_new_location_popup_location_name')} 
+                                placeholder={t('add_new_location_popup_location_name_placeholder')} fullWidth
+                                value={locationInfor.locationName} onChange={(event) => handleChangeLocationName(event.target.value)}
                             />
                         </div>
                         <Button variant="contained" fullWidth className='add-new-storage-popup-body-add-btn'
@@ -139,4 +153,4 @@ const AddNewStorage = () => {
     )
 }
 
-export default AddNewStorage;
+export default AddNewLocation;

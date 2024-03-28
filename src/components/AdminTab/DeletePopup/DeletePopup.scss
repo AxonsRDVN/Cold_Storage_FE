@@ -16,9 +16,19 @@
     font-weight: 500;
 }
 
-.delete-popup-btn {
+@mixin delete-popup-btn {
     text-transform: none !important;
     font-family: 'IBM Plex Sans' !important;
     width: 100px !important;
     margin: 20px 10px 0 10px !important;
+}
+
+.delete-popup-confirm-btn {
+    @include delete-popup-btn();
+    background-color: #0C4DA0 !important;
+}
+
+.delete-popup-cancel-btn {
+    @include delete-popup-btn();
+    background-color: #8b8b8b !important;
 }

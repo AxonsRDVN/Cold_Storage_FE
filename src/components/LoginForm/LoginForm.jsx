@@ -15,7 +15,7 @@ import logo from '../../assets/logo_header.jpg';
 import { LOCAL_STORAGE_KEY } from '../../config/memory.config';
 import { toast } from 'react-toastify'; 
 import { initToast } from '../../utils/helper';
-import { ToastId } from '../../config/app.config';
+import { ToastId, AccountConfig } from '../../config/app.config';
 import './LoginForm.scss';
 
 const LoginForm = () => {
@@ -68,7 +68,7 @@ const LoginForm = () => {
             setShowWarningPassword(true)
         }
 
-        if ((email === 'admin@cp.com.vn' && password === 'Admin@123') || (email === 'staff@cp.com.vn' && password === 'Staff@123')) {
+        if (AccountConfig.find(account => account.Username === email && account.Password === password)) {
             navigate(ROUTE_PATH.DASHBOARD)
             localStorage.setItem(LOCAL_STORAGE_KEY.USER_EMAIL, email)
 

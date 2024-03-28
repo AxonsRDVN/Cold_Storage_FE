@@ -37,19 +37,18 @@ const modalStyle = {
 };
 
 const ConfigStorage = (props) => {
-    const { parrentPlant, storageConfig } = props
     const context = useContext(AdminContext)
     const { t } = useTranslation('translation')
 
     const [storageInfor, setStorageInfor] = useState({
-        storageId: storageConfig?.storageId || 0,
-        storageName: storageConfig?.storageName || '',
-        status: storageConfig?.status || '',
-        tempMax: storageConfig?.standard?.temp?.split('-')[1] || '',
-        tempMin: storageConfig?.standard?.temp?.split('-')[0] || '',
-        humiMax: storageConfig?.standard?.humi?.split('-')[1] || '',
-        humiMin: storageConfig?.standard?.humi?.split('-')[0] || '',
-        effectiveDate: storageConfig?.effectiveDate ? convert_DD_MM_YYYY_to_YYYY_MM_DD(storageConfig?.effectiveDate) : moment().format('YYYY-MM-DD')
+        storageId: context.configStorage?.storage?.storageId || 0,
+        storageName: context.configStorage?.storage?.storageName || '',
+        status: context.configStorage?.storage?.status || '',
+        tempMax: context.configStorage?.storage?.standard?.temp?.split('-')[1] || '',
+        tempMin: context.configStorage?.storage?.standard?.temp?.split('-')[0] || '',
+        humiMax: context.configStorage?.storage?.standard?.humi?.split('-')[1] || '',
+        humiMin: context.configStorage?.storage?.standard?.humi?.split('-')[0] || '',
+        effectiveDate: context.configStorage?.storage?.effectiveDate ? convert_DD_MM_YYYY_to_YYYY_MM_DD(context.configStorage?.storage?.effectiveDate) : moment().format('YYYY-MM-DD')
     })
     const [confirm, setConfirm] = useState(false)
     
@@ -65,16 +64,16 @@ const ConfigStorage = (props) => {
 
     useEffect(() => {
         setStorageInfor({
-            storageId: storageConfig?.storageId || 0,
-            storageName: storageConfig?.storageName || '',
-            status: storageConfig?.status ? (storageConfig?.status === 'Active' ? 1 : 0) : '',
-            tempMax: storageConfig?.standard?.temp?.split('-')[1] || '',
-            tempMin: storageConfig?.standard?.temp?.split('-')[0] || '',
-            humiMax: storageConfig?.standard?.humi?.split('-')[1] || '',
-            humiMin: storageConfig?.standard?.humi?.split('-')[1] || '',
-            effectiveDate: storageConfig?.effectiveDate ? convert_DD_MM_YYYY_to_YYYY_MM_DD(storageConfig?.effectiveDate) : moment().format('YYYY-MM-DD')
+            storageId: context.configStorage?.storage?.storageId || 0,
+            storageName: context.configStorage?.storage?.storageName || '',
+            status: context.configStorage?.storage?.status ? (context.configStorage?.storage?.status === 'Active' ? 1 : 0) : '',
+            tempMax: context.configStorage?.storage?.standard?.temp?.split('-')[1] || '',
+            tempMin: context.configStorage?.storage?.standard?.temp?.split('-')[0] || '',
+            humiMax: context.configStorage?.storage?.standard?.humi?.split('-')[1] || '',
+            humiMin: context.configStorage?.storage?.standard?.humi?.split('-')[1] || '',
+            effectiveDate: context.configStorage?.storage?.effectiveDate ? convert_DD_MM_YYYY_to_YYYY_MM_DD(context.configStorage?.storage?.effectiveDate) : moment().format('YYYY-MM-DD')
         })
-    }, [storageConfig])
+    }, [context.configStorage?.storage])
 
     useEffect(() => {
         if (confirm) {
@@ -131,13 +130,13 @@ const ConfigStorage = (props) => {
                         <div className='config-storage-popup-body-text-field'>
                             <TextField  variant="outlined" label={t('add_new_factory_popup_factory_code')}
                                 placeholder={t('add_new_factory_popup_factory_code_placeholder')} fullWidth
-                                value={parrentPlant?.plantCode || ''} disabled
+                                value={context.configStorage?.plant?.plantCode || ''} disabled
                             />
                         </div>
                         <div className='config-storage-popup-body-text-field'>
                             <TextField  variant="outlined" label={t('add_new_factory_popup_factory_name')}
                                 placeholder={t('add_new_factory_popup_factory_name_placeholder')} fullWidth
-                                value={parrentPlant?.plantName || ''} disabled
+                                value={context.configStorage?.plant?.plantName || ''} disabled
                             />
                         </div>
                         <div className='config-storage-popup-body-text-field'>

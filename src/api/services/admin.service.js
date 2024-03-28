@@ -38,6 +38,27 @@ class adminService {
         })
         return result
     }
+
+    createLocation = async ({ baCode, plantCode, storageId, locationName }) => {
+        const result = await this.#_baseApi.post('/admin/create-location', {
+            baCode, plantCode, storageId, locationName
+        })
+        return result
+    }
+
+    updateLocation = async ({ baCode, plantCode, storageId, locationId, locationName, remark, isActived, effectiveDate }) => {
+        const result = await this.#_baseApi.post('/admin/update-location', {
+            baCode, plantCode, storageId, locationId, locationName, remark, isActived, effectiveDate
+        })
+        return result
+    }
+
+    delete = async ({ deleteType, plantCode, storageId, locationId }) => {
+        const result = await this.#_baseApi.post('/admin/delete', {
+            deleteType, plantCode, storageId, locationId
+        })
+        return result
+    }
 }
 
 export default adminService;

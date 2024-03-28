@@ -29,16 +29,15 @@ const modalStyle = {
     height: '100vh'
 };
 
-const ConfigFactory = (props) => {
-    const { plantConfig } = props
+const ConfigFactory = () => {
     const context = useContext(AdminContext)
     const { t } = useTranslation('translation')
 
     const [plantInfor, setPlantInfor] = useState({
-        plantCode: plantConfig?.plantCode || '',
-        plantName: plantConfig?.plantName || '',
-        address: plantConfig?.address || '',
-        status: plantConfig?.status ? (plantConfig?.status === 'Active' ? 1 : 0) : ''
+        plantCode: context.configPlant?.plant?.plantCode || '',
+        plantName: context.configPlant?.plant?.plantName || '',
+        address: context.configPlant?.plant?.address || '',
+        status: context.configPlant?.plant?.status ? (context.configPlant?.plant?.status === 'Active' ? 1 : 0) : ''
     })
     const [confirm, setConfirm] = useState(false)
 
@@ -54,12 +53,12 @@ const ConfigFactory = (props) => {
 
     useEffect(() => {
         setPlantInfor({
-            plantCode: plantConfig?.plantCode || '',
-            plantName: plantConfig?.plantName || '',
-            address: plantConfig?.address || '',
-            status: plantConfig?.status ? (plantConfig?.status === 'Active' ? 1 : 0) : ''
+            plantCode: context.configPlant?.plant?.plantCode || '',
+            plantName: context.configPlant?.plant?.plantName || '',
+            address: context.configPlant?.plant?.address || '',
+            status: context.configPlant?.plant?.status ? (context.configPlant?.plant?.status === 'Active' ? 1 : 0) : ''
         })
-    }, [plantConfig])
+    }, [context.configPlant])
 
     useEffect(() => {
         if (confirm) {
